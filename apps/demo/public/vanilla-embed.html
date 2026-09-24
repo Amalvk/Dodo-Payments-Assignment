@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plain HTML embed — no bundler, no framework</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8fafc;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        color: #0f172a;
+      }
+      main {
+        width: 100%;
+        max-width: 420px;
+        padding: 24px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      }
+      h1 {
+        font-size: 15px;
+        margin: 0 0 4px;
+      }
+      p {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0 0 20px;
+      }
+      button {
+        width: 100%;
+        border: 0;
+        border-radius: 10px;
+        background: #5b4ff5;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #4a3de0;
+      }
+      #log {
+        margin-top: 16px;
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        color: #475569;
+        background: #f1f5f9;
+        border-radius: 10px;
+        padding: 12px;
+        max-height: 160px;
+        overflow-y: auto;
+      }
+      #log div {
+        padding: 2px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>Plain HTML embed</h1>
+        <p>
+          No React, no bundler — just <code>&lt;script src="/dodo-checkout-sdk.js"&gt;</code> and a
+          function call. Run <code>npm run build:sdk-bundle</code> first if this button doesn't do
+          anything.
+        </p>
+        <button id="buy">Buy Pro Plan — $29/mo</button>
+        <div id="log"></div>
+      </div>
+    </main>
+
+    <script src="/dodo-checkout-sdk.js"></script>
+    <script>
+      function log(line) {
+        var el = document.getElementById('log');
+        var row = document.createElement('div');
+        row.textContent = new Date().toLocaleTimeString() + '  ' + line;
+        el.prepend(row);
+      }
+
+      document.getElementById('buy').addEventListener('click', function () {
+        window.DodoCheckout.open({
+          productId: 'prod_123',
+          onSuccess: function (payload) {
+            log('onSuccess sessionId=' + payload.sessionId);
+          },
+          onClose: function (payload) {
+            log('onClose reason=' + payload.reason);
+          },
+          onError: function (payload) {
+            log('onError ' + payload.code + ' — ' + payload.message);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -4,7 +4,7 @@ import { formatPrice, products } from '@dodo/products';
 import { EventLog, type LogEntry } from './components/EventLog';
 
 const PRODUCT = products.prod_123;
-
+ 
 // Local dev needs no configuration — the SDK's built-in default already
 // points at the checkout app's own dev server (localhost:5174). A deployed
 // build sets VITE_CHECKOUT_URL at build time to point at wherever
